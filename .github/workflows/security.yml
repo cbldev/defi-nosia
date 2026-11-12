@@ -1,0 +1,22 @@
+name: Scan Nosia
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  scan-nosia-image:
+    name: Scan Nosia image
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: 'dilolabs/nosia:latest'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
